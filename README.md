@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Personal developer portfolio for [Marvy Nwaokobia](https://github.com/MarvyNwaokobia) — full-stack & protocol engineer. A single-page site covering skills, featured projects, and contact info.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Next.js](https://nextjs.org) 16 (App Router, Turbopack)
+- TypeScript
+- Tailwind CSS v4
+- Fonts via `next/font/google`: [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) (headings, labels, code) + [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) (body)
+
+No backend, no database, no external APIs — fully static, deployable anywhere that serves a Next.js app.
+
+## Project structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx     # fonts, metadata, root HTML shell
+│   ├── page.tsx        # assembles the page from section components
+│   └── globals.css     # design tokens (colors) + base styles
+├── components/
+│   ├── Nav.tsx          # sticky header with anchor links
+│   ├── Hero.tsx          # intro / tagline / CTAs
+│   ├── Skills.tsx         # skills grid, reads from data/projects.ts
+│   ├── Projects.tsx        # featured projects grid with category filter
+│   ├── About.tsx            # longer-form bio
+│   ├── Contact.tsx           # GitHub / Twitter links
+│   └── Footer.tsx
+└── data/
+    └── projects.ts    # single source of truth for project + skill content
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To add, remove, or edit a project or skill, edit `src/data/projects.ts` — nothing else needs to change.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design system
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Dark (OLED-style) theme, defined as CSS custom properties in `src/app/globals.css` and exposed to Tailwind via `@theme inline`:
 
-## Learn More
+| Token | Value | Use |
+|---|---|---|
+| `--background` | `#020617` | page background |
+| `--card` | `#0e1223` | project/skill cards |
+| `--foreground` | `#f8fafc` | primary text |
+| `--muted-foreground` | `#94a3b8` | secondary text |
+| `--border` | `#283044` | card/section borders |
+| `--accent` | `#22c55e` | links, active states, CTA |
 
-To learn more about Next.js, take a look at the following resources:
+Respects `prefers-reduced-motion` and uses visible focus rings (`:focus-visible`) for keyboard navigation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Getting started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) (Next.js will pick the next free port if 3000 is taken).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint    # eslint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+Not yet deployed. The natural fit is [Vercel](https://vercel.com/new) given the Next.js stack — connect this repo and it deploys with zero config.
