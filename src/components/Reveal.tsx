@@ -11,12 +11,13 @@ type RevealProps = {
 };
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 28, filter: "blur(8px)" },
   visible: ({ delay }: { delay: number }) => ({
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: {
-      duration: 0.5,
+      duration: 0.7,
       delay,
       ease: [0.16, 1, 0.3, 1],
     },

@@ -24,21 +24,22 @@ export default function Contact() {
           Open to interesting protocol &amp; full-stack work.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          {links.map((link) => (
-            <MagneticButton
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-              rel={
-                link.href.startsWith("mailto:")
-                  ? undefined
-                  : "noreferrer noopener"
-              }
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-accent hover:text-accent"
-            >
-              <link.Icon aria-hidden className="h-5 w-5" />
-              <span className="sr-only">{link.label}</span>
-            </MagneticButton>
+          {links.map((link, index) => (
+            <Reveal key={link.label} delay={0.1 + index * 0.08}>
+              <MagneticButton
+                href={link.href}
+                target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={
+                  link.href.startsWith("mailto:")
+                    ? undefined
+                    : "noreferrer noopener"
+                }
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border text-foreground transition-all hover:border-accent hover:text-accent hover:shadow-[0_0_24px_-8px_var(--accent)]"
+              >
+                <link.Icon aria-hidden className="h-5 w-5" />
+                <span className="sr-only">{link.label}</span>
+              </MagneticButton>
+            </Reveal>
           ))}
         </div>
       </Reveal>

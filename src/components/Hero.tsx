@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "framer-motion";
+import { useRef } from "react";
 import MagneticButton from "./MagneticButton";
+import HeroVisual from "./HeroVisual";
 
 const container: Variants = {
   hidden: {},
@@ -11,20 +13,31 @@ const container: Variants = {
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 const stack = ["Solidity", "Rust", "Circom", "Soroban", "FHEVM", "Cairo"];
 
 export default function Hero() {
+  const shouldReduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : 80]);
+  const visualOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
     <section
       id="top"
+      ref={sectionRef}
       className="relative overflow-hidden border-b border-border/80 px-6 py-24 sm:py-32"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -33,7 +46,7 @@ export default function Hero() {
 
       <div
         aria-hidden
-        className="absolute right-6 top-6 hidden h-24 w-24 sm:block lg:right-10 lg:top-10"
+        className="absolute right-6 top-6 hidden h-20 w-20 sm:block lg:right-10 lg:top-10"
       >
         <svg viewBox="0 0 100 100" className="animate-spin-slow h-full w-full text-accent">
           <defs>
@@ -53,67 +66,69 @@ export default function Hero() {
         </span>
       </div>
 
-      <motion.div
-        className="mx-auto max-w-3xl text-center"
-        initial="hidden"
-        animate="visible"
-        variants={container}
-      >
-        <motion.p
-          variants={item}
-          className="font-mono text-sm uppercase tracking-[0.2em] text-accent"
-        >
-          Hi, I&apos;m Marvy
-        </motion.p>
-        <motion.h1
-          variants={item}
-          className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-6xl"
-        >
-          Full-stack engineer,
-          <br />
-          <span className="text-accent">building secure protocols.</span>
-        </motion.h1>
-        <motion.p
-          variants={item}
-          className="mt-6 text-balance text-lg leading-relaxed text-muted-foreground"
-        >
-          I build secure systems end-to-end — smart contracts, cryptography,
-          backends, and the apps on top of them. Most of my work sits at the
-          intersection of applied cryptography and financial infrastructure:
-          zero-knowledge proofs, fully homomorphic encryption, and the
-          payments and protocol rails built on top of them.
-        </motion.p>
-        <motion.div
-          variants={item}
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
-        >
-          <MagneticButton
-            href="#projects"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-medium text-accent-foreground shadow-[0_0_24px_-6px_var(--accent)] transition-colors hover:bg-accent/90"
+      <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+        <motion.div initial="hidden" animate="visible" variants={container}>
+          <motion.p
+            variants={item}
+            className="font-mono text-sm uppercase tracking-[0.2em] text-accent"
           >
-            View projects
-          </MagneticButton>
-          <MagneticButton
-            href="#contact"
-            className="inline-flex h-11 items-center justify-center rounded-full border border-border px-6 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+            Hi, I&apos;m Marvy
+          </motion.p>
+          <motion.h1
+            variants={item}
+            className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-6xl"
           >
-            Get in touch
-          </MagneticButton>
-        </motion.div>
-        <motion.ul
-          variants={item}
-          className="mt-8 flex flex-wrap items-center justify-center gap-2"
-        >
-          {stack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[11px] text-muted-foreground"
+            Full-stack engineer,
+            <br />
+            <span className="text-accent">building secure protocols.</span>
+          </motion.h1>
+          <motion.p
+            variants={item}
+            className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted-foreground"
+          >
+            I build secure systems end-to-end — smart contracts, cryptography,
+            backends, and the apps on top of them. Most of my work sits at the
+            intersection of applied cryptography and financial infrastructure:
+            zero-knowledge proofs, fully homomorphic encryption, and the
+            payments and protocol rails built on top of them.
+          </motion.p>
+          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
+            <MagneticButton
+              href="#projects"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-medium text-accent-foreground shadow-[0_0_24px_-6px_var(--accent)] transition-colors hover:bg-accent/90"
             >
-              {tech}
-            </li>
-          ))}
-        </motion.ul>
-      </motion.div>
+              View projects
+            </MagneticButton>
+            <MagneticButton
+              href="#contact"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-border px-6 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+            >
+              Get in touch
+            </MagneticButton>
+          </motion.div>
+          <motion.ul variants={item} className="mt-8 flex flex-wrap items-center gap-2">
+            {stack.map((tech) => (
+              <li
+                key={tech}
+                className="rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[11px] text-muted-foreground"
+              >
+                {tech}
+              </li>
+            ))}
+          </motion.ul>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="hidden lg:block"
+        >
+          <motion.div style={{ y: visualY, opacity: visualOpacity }}>
+            <HeroVisual />
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -12,7 +12,13 @@ import type { Project } from "@/data/projects";
 
 const TILT_RANGE = 8;
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  index = 0,
+}: {
+  project: Project;
+  index?: number;
+}) {
   const shouldReduceMotion = useReducedMotion();
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -44,10 +50,14 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
+      transition={{
+        duration: 0.4,
+        ease: [0.16, 1, 0.3, 1],
+        delay: Math.min(index, 8) * 0.05,
+      }}
       className="group relative h-full"
     >
       <div

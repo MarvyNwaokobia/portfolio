@@ -67,9 +67,9 @@ export default function Projects() {
 
         <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filtered.map((project) => (
+            {filtered.map((project, index) => (
               <motion.li layout key={project.name}>
-                <ProjectCard project={project} />
+                <ProjectCard project={project} index={index} />
               </motion.li>
             ))}
           </AnimatePresence>

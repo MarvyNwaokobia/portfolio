@@ -1,12 +1,12 @@
 import { skills } from "@/data/projects";
 import Reveal from "./Reveal";
 
+// Same three hues used by the hero illustration's orbiting nodes, so the
+// page reads as one palette instead of an arbitrary rainbow of categories.
 const palette = [
   { bg: "bg-emerald-600", fg: "text-emerald-50", chip: "bg-emerald-950/40" },
   { bg: "bg-indigo-600", fg: "text-indigo-50", chip: "bg-indigo-950/40" },
   { bg: "bg-violet-600", fg: "text-violet-50", chip: "bg-violet-950/40" },
-  { bg: "bg-amber-600", fg: "text-amber-50", chip: "bg-amber-950/40" },
-  { bg: "bg-teal-600", fg: "text-teal-50", chip: "bg-teal-950/40" },
 ];
 
 export default function Skills() {
