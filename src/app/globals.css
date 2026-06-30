@@ -1,17 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
-  --card: #0e1223;
-  --card-foreground: #f8fafc;
-  --muted: #1a1e2f;
-  --muted-foreground: #94a3b8;
-  --border: #283044;
+  --background: #050505;
+  --foreground: #f7f7f5;
+  --card: #0c0c0c;
+  --card-foreground: #f7f7f5;
+  --muted: #161616;
+  --muted-foreground: #9a9a96;
+  --border: #2a2a28;
   --accent: #22c55e;
-  --accent-foreground: #020617;
-  --accent-2: #2563eb;
-  --accent-3: #a855f7;
+  --accent-foreground: #04140a;
   --destructive: #ef4444;
   --ring: #22c55e;
 }
@@ -28,10 +26,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-ring: var(--ring);
-  --color-accent-2: var(--accent-2);
-  --color-accent-3: var(--accent-3);
   --font-sans: var(--font-plex-sans);
   --font-mono: var(--font-jetbrains-mono);
+  --font-display: var(--font-fraunces);
 }
 
 html {
@@ -90,6 +87,16 @@ body::before {
 
 .animate-aurora-slow {
   animation: aurora-drift 22s ease-in-out infinite reverse;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 14s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,6 +1,14 @@
 import { skills } from "@/data/projects";
 import Reveal from "./Reveal";
 
+const palette = [
+  { bg: "bg-emerald-600", fg: "text-emerald-50", chip: "bg-emerald-950/40" },
+  { bg: "bg-indigo-600", fg: "text-indigo-50", chip: "bg-indigo-950/40" },
+  { bg: "bg-violet-600", fg: "text-violet-50", chip: "bg-violet-950/40" },
+  { bg: "bg-amber-600", fg: "text-amber-50", chip: "bg-amber-950/40" },
+  { bg: "bg-teal-600", fg: "text-teal-50", chip: "bg-teal-950/40" },
+];
+
 export default function Skills() {
   const categories = Object.entries(skills);
 
@@ -12,30 +20,31 @@ export default function Skills() {
             What I work with
           </h2>
         </Reveal>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map(([category, items], index) => (
-            <Reveal key={category} delay={index * 0.08}>
-              <div className="group glass relative h-full overflow-hidden rounded-lg p-6 transition-colors hover:border-accent/60">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map(([category, items], index) => {
+            const colors = palette[index % palette.length];
+            return (
+              <Reveal key={category} delay={index * 0.08}>
                 <div
-                  aria-hidden
-                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/0 blur-2xl transition-colors duration-300 group-hover:bg-accent/20"
-                />
-                <h3 className="text-sm font-semibold text-foreground">
-                  {category}
-                </h3>
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {items.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full border border-border bg-muted px-3 py-1 font-mono text-xs text-muted-foreground transition-colors group-hover:border-accent/40"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
+                  className={`h-full rounded-2xl p-6 shadow-lg shadow-black/30 transition-transform duration-300 hover:-translate-y-1 ${colors.bg}`}
+                >
+                  <h3 className={`text-sm font-semibold ${colors.fg}`}>
+                    {category}
+                  </h3>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className={`rounded-full px-3 py-1 font-mono text-xs ${colors.fg} ${colors.chip}`}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
