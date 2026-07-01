@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #fef2f8;
@@ -11,6 +12,20 @@
   --accent: #e11d7a;
   --accent-foreground: #ffffff;
   --destructive: #dc2626;
+  --ring: #e11d7a;
+}
+
+.dark {
+  --background: #0d0509;
+  --foreground: #fdf2f8;
+  --card: #140a10;
+  --card-foreground: #fdf2f8;
+  --muted: #1e1018;
+  --muted-foreground: #b8789a;
+  --border: #3a1828;
+  --accent: #e11d7a;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
   --ring: #e11d7a;
 }
 
@@ -62,10 +77,10 @@ body::before {
 }
 
 .glass {
-  background: color-mix(in oklab, var(--card) 80%, transparent);
+  background: color-mix(in oklab, var(--card) 85%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
 }
 
 @keyframes aurora-drift {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, IBM_Plex_Sans, Fraunces } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -42,8 +43,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${jetbrainsMono.variable} ${plexSans.variable} ${fraunces.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

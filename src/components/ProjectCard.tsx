@@ -18,17 +18,17 @@ const categoryStyle: Record<
 > = {
   "Privacy & Cryptography": {
     dot: "bg-emerald-500",
-    text: "text-emerald-700",
+    text: "text-emerald-700 dark:text-emerald-400",
     glow: "rgba(16,185,129,0.1)",
   },
   "Payments & Financial Infra": {
     dot: "bg-indigo-500",
-    text: "text-indigo-700",
+    text: "text-indigo-700 dark:text-indigo-400",
     glow: "rgba(99,102,241,0.1)",
   },
   "Apps & Systems": {
     dot: "bg-violet-500",
-    text: "text-violet-700",
+    text: "text-violet-700 dark:text-violet-400",
     glow: "rgba(139,92,246,0.1)",
   },
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "#skills", label: "Skills", id: "skills" },
@@ -60,12 +61,15 @@ export default function Nav() {
             );
           })}
         </ul>
-        <a
-          href="#contact"
-          className="inline-flex h-9 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-        >
-          Contact
-        </a>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <a
+            href="#contact"
+            className="inline-flex h-9 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
+          >
+            Contact
+          </a>
+        </div>
       </nav>
       <ul className="flex items-center gap-4 overflow-x-auto border-t border-border/80 px-6 py-2.5 sm:hidden">
         {links.map((link) => (
