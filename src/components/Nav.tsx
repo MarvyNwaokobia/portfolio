@@ -40,7 +40,7 @@ export default function Nav() {
           href="#top"
           className="font-mono text-sm font-medium tracking-tight text-foreground hover:text-accent transition-colors"
         >
-          marvy<span className="text-accent">.</span>dev
+          marvys<span className="text-accent">mind</span>
         </a>
         <ul className="hidden items-center gap-1 rounded-full border border-border bg-card/60 p-1 sm:flex">
           {links.map((link) => {
