@@ -95,15 +95,15 @@ export const projects: Project[] = [
 ];
 
 export const skills = {
-  Languages: ["Solidity", "Rust", "TypeScript", "Python", "Cairo"],
-  "Smart contracts & protocols": ["EVM (Solidity)", "Soroban (Rust/Stellar)", "Cairo (Starknet)"],
+  Languages: ["TypeScript", "JavaScript", "Python", "Rust", "Solidity", "Cairo"],
+  Frontend: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "HTML & CSS"],
+  Backend: ["Node.js", "Express", "PostgreSQL", "REST APIs", "WebSockets"],
+  "Web3 & Protocols": ["EVM / Solidity", "Soroban (Rust/Stellar)", "Cairo (Starknet)"],
   Cryptography: [
     "Zero-knowledge proofs (Circom, Groth16)",
-    "Fully homomorphic encryption (Zama FHEVM)",
-    "Merkle trees",
-    "Secret sharing",
+    "Fully homomorphic encryption (FHE)",
     "Commitment schemes",
+    "Merkle trees",
   ],
-  "Full-stack": ["Next.js", "React", "Node.js", "PostgreSQL"],
-  Data: ["Python", "pandas", "Jupyter"],
+  Tooling: ["Git", "Docker", "Vercel", "Linux", "CI/CD"],
 };

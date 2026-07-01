@@ -22,7 +22,7 @@ const item: Variants = {
   },
 };
 
-const stack = ["Solidity", "Rust", "Circom", "Soroban", "FHEVM", "Cairo"];
+const stack = ["TypeScript", "React", "Next.js", "Node.js", "Rust", "Solidity"];
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -78,19 +78,18 @@ export default function Hero() {
             variants={item}
             className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-6xl"
           >
-            Full-stack engineer,
+            Full-stack developer,
             <br />
-            <span className="text-accent">building secure protocols.</span>
+            <span className="text-accent">Web2 and Web3.</span>
           </motion.h1>
           <motion.p
             variants={item}
             className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted-foreground"
           >
-            I build secure systems end-to-end — smart contracts, cryptography,
-            backends, and the apps on top of them. Most of my work sits at the
-            intersection of applied cryptography and financial infrastructure:
-            zero-knowledge proofs, fully homomorphic encryption, and the
-            payments and protocol rails built on top of them.
+            I build full-stack applications and on-chain protocols — React
+            frontends, Node.js backends, REST APIs, and when the problem calls
+            for it, smart contracts, ZK proofs, and cryptographic systems. I
+            work across the entire stack, both off-chain and on.
           </motion.p>
           <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
             <MagneticButton

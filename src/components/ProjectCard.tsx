@@ -18,18 +18,18 @@ const categoryStyle: Record<
 > = {
   "Privacy & Cryptography": {
     dot: "bg-emerald-500",
-    text: "text-emerald-400",
-    glow: "rgba(34,197,94,0.14)",
+    text: "text-emerald-700",
+    glow: "rgba(16,185,129,0.1)",
   },
   "Payments & Financial Infra": {
     dot: "bg-indigo-500",
-    text: "text-indigo-400",
-    glow: "rgba(129,140,248,0.14)",
+    text: "text-indigo-700",
+    glow: "rgba(99,102,241,0.1)",
   },
   "Apps & Systems": {
     dot: "bg-violet-500",
-    text: "text-violet-400",
-    glow: "rgba(192,132,252,0.14)",
+    text: "text-violet-700",
+    glow: "rgba(139,92,246,0.1)",
   },
 };
 
@@ -92,7 +92,7 @@ export default function ProjectCard({
           rotateY: springRotateY,
           transformPerspective: 900,
         }}
-        className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/40 p-6 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-accent/35 hover:shadow-[0_0_48px_-14px_var(--accent)]"
+        className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_4px_32px_-8px_var(--accent)]"
       >
         {/* Cursor-tracking glow */}
         <motion.div
@@ -104,7 +104,7 @@ export default function ProjectCard({
         {/* Faded background number */}
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-1 top-1 select-none font-mono text-8xl font-bold leading-none text-border/15 transition-colors duration-300 group-hover:text-accent/8"
+          className="pointer-events-none absolute -right-1 top-1 select-none font-mono text-8xl font-bold leading-none text-border/40 transition-colors duration-300 group-hover:text-accent/15"
         >
           {num}
         </span>
@@ -140,7 +140,7 @@ export default function ProjectCard({
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-border/50 bg-muted/30 px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground"
+              className="rounded-full border border-border bg-muted px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground"
             >
               {tag}
             </li>
