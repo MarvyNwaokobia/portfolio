@@ -23,9 +23,9 @@ export default function Projects() {
       : projects.filter((project) => project.category === active);
 
   return (
-    <section id="projects" className="border-b border-border/80 px-6 py-20">
+    <section id="projects" className="relative px-6 py-24 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-24 before:bg-linear-to-b before:from-background before:to-transparent">
       <div className="mx-auto max-w-6xl">
-        <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <Reveal direction="left" className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="font-mono text-sm font-medium uppercase tracking-wider text-accent">
             Featured projects
           </h2>

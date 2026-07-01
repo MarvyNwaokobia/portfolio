@@ -38,7 +38,7 @@ export default function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-border/80 px-6 py-24 sm:py-32"
+      className="relative min-h-[90svh] overflow-hidden px-6 py-24 sm:py-32 flex items-center after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-32 after:bg-linear-to-t after:from-background after:to-transparent"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="animate-aurora absolute left-1/2 top-[-15%] h-105 w-140 -translate-x-1/2 rounded-full bg-accent/12 blur-[130px]" />

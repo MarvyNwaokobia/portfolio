@@ -2,9 +2,9 @@ import Reveal from "./Reveal";
 
 export default function About() {
   return (
-    <section id="about" className="border-b border-border/80 px-6 py-20">
+    <section id="about" className="relative px-6 py-24 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-24 before:bg-linear-to-b before:from-background before:to-transparent">
       <div className="mx-auto max-w-3xl">
-        <Reveal>
+        <Reveal direction="left">
           <h2 className="font-mono text-sm font-medium uppercase tracking-wider text-accent">
             About
           </h2>
