@@ -28,7 +28,7 @@ export default function SlideHome() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative flex min-h-full w-full items-center overflow-hidden px-6 py-10">
+    <section className="relative flex w-full flex-1 items-center overflow-hidden px-6 py-10">
       {/* Ambient glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="animate-aurora absolute left-1/2 top-[-15%] h-105 w-140 -translate-x-1/2 rounded-full bg-accent/12 blur-[130px]" />

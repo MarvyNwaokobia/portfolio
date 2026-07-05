@@ -2,6 +2,7 @@
 
 import { Children, useCallback, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { useSlides } from "./SlideContext";
 
 export default function SlideLayout({
@@ -77,7 +78,7 @@ export default function SlideLayout({
           ref={(el) => {
             sectionRefs.current[i] = el;
           }}
-          className="min-h-full"
+          className="flex min-h-full flex-col"
         >
           {slide}
         </div>
@@ -97,14 +98,18 @@ export default function SlideLayout({
 
       {/* Next arrow — right side */}
       {current < total - 1 && (
-        <button
+        <motion.button
           type="button"
           onClick={() => scrollTo(current + 1)}
           aria-label="Next section"
-          className="fixed right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:right-5"
+          animate={{ x: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
+          className="fixed right-4 top-1/2 z-30 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-[0_0_28px_-4px_var(--accent)] sm:right-6"
         >
-          <span className="select-none text-xl leading-none">›</span>
-        </button>
+          <span className="select-none text-2xl leading-none">›</span>
+        </motion.button>
       )}
 
       {/* Dot indicators */}
