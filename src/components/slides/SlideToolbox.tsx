@@ -1,25 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { projects, skills } from "@/data/projects";
-
-const categoryKeywords: Record<keyof typeof skills, string[]> = {
-  Languages: ["typescript", "python", "rust", "solidity", "cairo"],
-  Frontend: ["next.js"],
-  Backend: [],
-  "Web3 & Protocols": ["evm", "solidity", "soroban", "rust", "cairo", "starknet"],
-  Cryptography: ["circom", "groth16", "fhe", "fhevm", "noir"],
-  Tooling: [],
-};
-
-function relatedProjects(category: keyof typeof skills) {
-  const keywords = categoryKeywords[category];
-  if (keywords.length === 0) return [];
-  return projects.filter((project) =>
-    project.tags.some((tag) => keywords.includes(tag.toLowerCase()))
-  );
-}
+import { motion, type Variants } from "framer-motion";
+import { skills } from "@/data/projects";
 
 const cardColors: Record<keyof typeof skills, { bg: string; border: string; title: string; chip: string }> = {
   Languages: {
@@ -77,7 +59,6 @@ const cardVariant: Variants = {
 
 export default function SlideToolbox() {
   const categories = Object.entries(skills) as [keyof typeof skills, string[]][];
-  const [openCategory, setOpenCategory] = useState<keyof typeof skills | null>(null);
 
   return (
     <div className="px-10 pb-16 pt-6 sm:px-16 lg:px-20">
@@ -108,15 +89,6 @@ export default function SlideToolbox() {
         Tools and technologies I reach for regularly.
       </motion.p>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.15 }}
-        className="mt-1 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-accent/60"
-      >
-        Drag a card sideways to see what it&apos;s built
-      </motion.p>
-
       <motion.div
         variants={container}
         initial="hidden"
@@ -125,32 +97,15 @@ export default function SlideToolbox() {
       >
         {categories.map(([category, items]) => {
           const colors = cardColors[category];
-          const isOpen = openCategory === category;
-          const related = relatedProjects(category);
           return (
             <motion.div
               key={category}
               variants={cardVariant}
-              drag="x"
-              dragSnapToOrigin
-              dragElastic={0.2}
-              dragConstraints={{ left: -60, right: 60 }}
-              whileDrag={{ scale: 1.03 }}
-              onDragEnd={(_, info) => {
-                if (Math.abs(info.offset.x) > 40) {
-                  setOpenCategory((prev) => (prev === category ? null : category));
-                }
-              }}
-              className={`flex cursor-grab flex-col rounded-xl border p-4 active:cursor-grabbing ${colors.bg} ${colors.border}`}
+              className={`flex flex-col rounded-xl border p-4 ${colors.bg} ${colors.border}`}
             >
-              <div className="flex items-center justify-between">
-                <h3 className={`font-mono text-xs font-semibold uppercase tracking-[0.18em] ${colors.title}`}>
-                  {category}
-                </h3>
-                <span aria-hidden className="text-xs text-muted-foreground/40">
-                  ⇄
-                </span>
-              </div>
+              <h3 className={`font-mono text-xs font-semibold uppercase tracking-[0.18em] ${colors.title}`}>
+                {category}
+              </h3>
               <ul className="mt-3 flex flex-wrap gap-1.5">
                 {items.map((skill) => (
                   <li
@@ -161,49 +116,6 @@ export default function SlideToolbox() {
                   </li>
                 ))}
               </ul>
-
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`mt-3 border-t pt-3 ${colors.border}`}>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60">
-                        Used in
-                      </p>
-                      {related.length > 0 ? (
-                        <ul className="mt-2 flex flex-wrap gap-1.5">
-                          {related.slice(0, 4).map((project) => (
-                            <li key={project.name}>
-                              <a
-                                href={project.href}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className={`inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-medium underline-offset-2 hover:underline ${colors.chip}`}
-                              >
-                                {project.name}
-                              </a>
-                            </li>
-                          ))}
-                          {related.length > 4 && (
-                            <li className="px-1 py-0.5 text-[10px] text-muted-foreground/60">
-                              +{related.length - 4} more
-                            </li>
-                          )}
-                        </ul>
-                      ) : (
-                        <p className="mt-1 text-[11px] text-muted-foreground/70">
-                          The quiet infrastructure behind every project here.
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           );
         })}
