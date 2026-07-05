@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function SlideProjects({ category, subtitle, description, slideNumber }: Props) {
+  const [revealed, setRevealed] = useState(false);
   const filtered = projects.filter((p) => p.category === category);
 
   return (
@@ -60,17 +62,49 @@ export default function SlideProjects({ category, subtitle, description, slideNu
         </motion.p>
       </div>
 
-      {/* Project cards */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
-        className="mt-5 grid gap-4 sm:grid-cols-2"
-      >
-        {filtered.map((project, i) => (
-          <ProjectCard key={project.name} project={project} index={i} />
-        ))}
-      </motion.div>
+      {/* Reveal gate / project cards */}
+      <AnimatePresence mode="wait">
+        {!revealed ? (
+          <motion.div
+            key="gate"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.92, filter: "blur(6px)" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-10 flex flex-col items-center gap-4 py-10"
+          >
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground/60">
+              {filtered.length} project{filtered.length === 1 ? "" : "s"} — see them come together
+            </p>
+            <motion.button
+              type="button"
+              onClick={() => setRevealed(true)}
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ scale: { repeat: Infinity, duration: 2.2, ease: "easeInOut" } }}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.94 }}
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-accent px-8 text-sm font-medium text-accent-foreground shadow-[0_0_32px_-6px_var(--accent)] transition-colors hover:bg-accent/90"
+            >
+              <span aria-hidden className="text-lg leading-none">
+                ✦
+              </span>
+              Reveal the work
+            </motion.button>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="grid"
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            className="mt-5 grid gap-4 sm:grid-cols-2"
+          >
+            {filtered.map((project, i) => (
+              <ProjectCard key={project.name} project={project} index={i} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
