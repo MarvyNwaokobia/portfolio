@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <MotionProvider>
       <SlideProvider total={LABELS.length}>
-        <div className="flex h-dvh flex-col overflow-hidden">
+        <div className="flex h-dvh flex-col">
           <Nav />
           <main className="min-h-0 flex-1">
             <SlideLayout labels={LABELS}>

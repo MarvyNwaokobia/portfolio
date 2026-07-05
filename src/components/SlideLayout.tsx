@@ -1,28 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Children, useEffect } from "react";
+import { Children, useCallback, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { useSlides } from "./SlideContext";
-
-type Bez = [number, number, number, number];
-
-const variants = {
-  enter: (dir: number) => ({
-    x: dir > 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    transition: { duration: 0.52, ease: [0.16, 1, 0.3, 1] as Bez },
-  },
-  exit: (dir: number) => ({
-    x: dir > 0 ? "-22%" : "22%",
-    opacity: 0,
-    transition: { duration: 0.38, ease: [0.4, 0, 0.6, 1] as Bez },
-  }),
-};
 
 export default function SlideLayout({
   children,
@@ -31,65 +11,109 @@ export default function SlideLayout({
   children: ReactNode;
   labels: string[];
 }) {
-  const { current, direction, goTo, next, prev, total } = useSlides();
+  const { current, goTo, total } = useSlides();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const slides = Children.toArray(children);
+  const skipObserver = useRef(false);
 
+  const scrollTo = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(total - 1, index));
+      const section = sectionRefs.current[clamped];
+      if (!section) return;
+      skipObserver.current = true;
+      goTo(clamped);
+      section.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        skipObserver.current = false;
+      }, 800);
+    },
+    [goTo, total]
+  );
+
+  // Keep dots / nav in sync while the user scrolls freely
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (skipObserver.current) return;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = sectionRefs.current.indexOf(
+              entry.target as HTMLDivElement
+            );
+            if (index !== -1) goTo(index);
+          }
+        });
+      },
+      { root: container, rootMargin: "-40% 0px -40% 0px", threshold: 0 }
+    );
+
+    const refs = sectionRefs.current;
+    refs.forEach((s) => s && observer.observe(s));
+    return () => observer.disconnect();
+  }, [goTo]);
+
+  // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowDown" || e.key === "ArrowRight")
+        scrollTo(current + 1);
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft")
+        scrollTo(current - 1);
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [next, prev]);
+  }, [current, scrollTo]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
-      <AnimatePresence mode="wait" initial={false} custom={direction}>
-        <motion.div
-          key={current}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="absolute inset-0 overflow-y-auto"
+    <div ref={containerRef} className="h-full overflow-y-auto">
+      {slides.map((slide, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            sectionRefs.current[i] = el;
+          }}
+          className="min-h-full"
         >
-          {slides[current]}
-        </motion.div>
-      </AnimatePresence>
+          {slide}
+        </div>
+      ))}
 
-      {/* Left arrow */}
+      {/* Prev arrow — left side */}
       {current > 0 && (
         <button
           type="button"
-          onClick={prev}
-          aria-label="Previous slide"
-          className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:left-5"
+          onClick={() => scrollTo(current - 1)}
+          aria-label="Previous section"
+          className="fixed left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:left-5"
         >
-          <span className="text-xl leading-none select-none">‹</span>
+          <span className="select-none text-xl leading-none">‹</span>
         </button>
       )}
 
-      {/* Right arrow */}
+      {/* Next arrow — right side */}
       {current < total - 1 && (
         <button
           type="button"
-          onClick={next}
-          aria-label="Next slide"
-          className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:right-5"
+          onClick={() => scrollTo(current + 1)}
+          aria-label="Next section"
+          className="fixed right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:right-5"
         >
-          <span className="text-xl leading-none select-none">›</span>
+          <span className="select-none text-xl leading-none">›</span>
         </button>
       )}
 
       {/* Dot indicators */}
-      <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5">
+      <div className="fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5">
         {labels.map((label, i) => (
           <button
             key={label}
             type="button"
-            onClick={() => goTo(i)}
+            onClick={() => scrollTo(i)}
             aria-label={`Go to ${label}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
               i === current
@@ -99,16 +123,6 @@ export default function SlideLayout({
           />
         ))}
       </div>
-
-      {/* Keyboard hint — fades in on first load */}
-      <motion.p
-        initial={{ opacity: 0.6 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 3, duration: 1.5 }}
-        className="pointer-events-none absolute bottom-5 right-6 hidden text-[11px] text-muted-foreground/50 lg:block"
-      >
-        ← → arrow keys to navigate
-      </motion.p>
     </div>
   );
 }
